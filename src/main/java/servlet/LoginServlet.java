@@ -8,7 +8,7 @@ import java.io.IOException;
 /**
  * Created by lovi on 2017.05.11..
  */
-@WebServlet("LoginServlet")
+@WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -19,7 +19,8 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         session.setAttribute("user",req.getParameter("username"));
-        System.out.println(session.getAttribute("user"));
+        Cookie cookie = new Cookie("user",req.getParameter("username"));
+        resp.sendRedirect("todos.jsp");
     }
 
 }
