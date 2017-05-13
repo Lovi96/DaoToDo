@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $.get("/LoginServlet", function (data) {
         console.log("started");
-        loadAll(data);
+        loadSite(data);
     });
     var textContent;
     $(".add").click(function () {
@@ -12,28 +12,30 @@ $(document).ready(function () {
             data: {"input": textContent},
             success: function (data) {
                 console.log("data elment");
-                loadAll(data);
+                loadSite(data);
             }
         });
     });
     $(".all").click(function () {
-        $.get("/todosServlet", function (data) {
-            loadAll(data)
+        $.get("/todosServlet",{"showAll":""}, function (data) {
+            loadSite(data)
         })
     });
-    $(".done").click(function () {
-        $.get("/todosServlet", {"getDone":""},function (data) {
-            loadAll(data)
-        })
-    });
+
     $(".incomplete").click(function () {
         $.get("/todosServlet",{"getInProgress":""},function (data) {
-            loadAll(data)
+            console.log("inprogress");
+            loadSite(data)
         })
-    })
-
+    });
+    $(".doneTasks").click(function () {
+        $.get("/todosServlet", {"getDoneTasks":""},function (data) {
+            console.log("done");
+            loadSite(data);
+        })
+    });
 });
-function loadAll(data) {
+function loadSite(data) {
     console.log(data);
     document.getElementById("container").innerHTML="";
     for (var i in data) {
@@ -74,8 +76,8 @@ function deleteButton(id){
         type:"DELETE",
         url:"/todosServlet/"+id
     });
-    $.get("/todosServlet",function (data) {
-        loadAll(data)
+    $.get("/todosServlet",{"showAll":""},function (data) {
+        loadSite(data)
     })
 }
 function toggleStatus(id){

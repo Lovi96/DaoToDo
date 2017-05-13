@@ -1,7 +1,6 @@
 package servlet;
 
 import com.google.gson.Gson;
-import com.sun.org.apache.xpath.internal.SourceTree;
 import dao.MemoryDao;
 
 import javax.servlet.ServletException;
@@ -30,12 +29,14 @@ public class todosServlet extends HttpServlet {
         if(req.getParameterMap().containsKey("toggle")) {
             memoryDao.toggleStatus(Integer.parseInt(req.getParameter("toggle")));
         }
-        if(req.getParameterMap().containsKey("getDone")) {
-            pw.print(new Gson().toJson(memoryDao.returnDone((String) session.getAttribute("user"))));
+        if(req.getParameterMap().containsKey("getDoneTasks")) {
+            pw.print(new Gson().toJson(memoryDao.returnDoneTasks((String) session.getAttribute("user"))));
         }
         if(req.getParameterMap().containsKey("getInProgress")) {
             pw.print(new Gson().toJson(memoryDao.returnInProgress((String) session.getAttribute("user"))));
-        } else {
+        }
+        if(req.getParameterMap().containsKey("input") || req.getParameterMap().containsKey("toggle")||
+            req.getParameterMap().containsKey("showAll")) {
             pw.print(new Gson().toJson(memoryDao.returnAll((String) session.getAttribute("user"))));
         }
     }

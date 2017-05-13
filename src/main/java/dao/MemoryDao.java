@@ -49,18 +49,18 @@ public class MemoryDao implements TodoDao {
     }
 
     @Override
-    public List<Task> returnDone(String user) {
+    public List<Task> returnInProgress(String user) {
         return getDatabase()
             .stream()
-            .filter(Task ->Task.isCompleted()!=false&&Task.getUser().equals(user) )
+            .filter(Task -> !Task.isCompleted() && Task.getUser().equals(user))
             .collect(Collectors.toList());
     }
 
     @Override
-    public List<Task> returnInProgress(String user) {
+    public List<Task> returnDoneTasks(String user) {
         return getDatabase()
             .stream()
-            .filter(Task -> !Task.isCompleted()&&Task.getUser().equals(user))
+            .filter(Task -> Task.isCompleted() && Task.getUser().equals(user))
             .collect(Collectors.toList());
     }
 
@@ -72,7 +72,7 @@ public class MemoryDao implements TodoDao {
     @Override
     public void toggleStatus(Integer id) {
         for(Task task : getDatabase()){
-            if(task.getId()==id){
+            if(task.getId().equals(id)){
                 task.setCompletion(!task.isCompleted());
             }
         }
@@ -85,15 +85,6 @@ public class MemoryDao implements TodoDao {
             .filter(Task -> !Task.getId().equals(id))
             .collect(Collectors.toList()));
     }
-//    public void deleteTask(Integer id) {
-//        List<Task> database = getDatabase();
-//        for(Task task :database){
-//            if(task.getId()==id){
-//                database.remove(task);
-//                setDatabase(database);
-//            }
-//        }
-//    }
 
     @Override
     public String toString() {

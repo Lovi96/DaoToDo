@@ -2,6 +2,7 @@ package servlet;
 
 import com.google.gson.Gson;
 import dao.MemoryDao;
+import org.json.HTTP;
 import util.Task;
 
 import javax.servlet.ServletException;
@@ -20,9 +21,9 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         MemoryDao memoryDao = MemoryDao.INSTANCE;
-        List<Task> database = memoryDao.getDatabase();
+        HttpSession session = req.getSession();
         PrintWriter pw = resp.getWriter();
-        pw.print(new Gson().toJson(database));
+        pw.print(new Gson().toJson(memoryDao.returnAll((String)session.getAttribute("user"))));
     }
 
     @Override

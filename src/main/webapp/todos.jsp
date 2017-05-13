@@ -22,7 +22,7 @@
 <button class="add">Add</button> <%--ide jön az addolos jquery --%>
 <input id="inputfield" type="text"> <%--innen ki kell szedni az adatot add nyomásra --%>
 <div id="container"></div> <%--ebbe lesz bele az összes task --%>
-<button class="all">All</button><button class="done">Done</button><button class="incomplete">Incomplete</button>
+<button class="all">All Tasks</button><button class="doneTasks">Done Tasks</button><button class="incomplete">Incomplete Tasks</button>
 <%--összes task                              kész taskok                               incomplete taszkok      --%>
 </body>
 </html>

@@ -19,7 +19,7 @@ public class SqlDao implements TodoDao{
     }
 
     @Override
-    public List<Task> returnDone(String user) {
+    public List<Task> returnDoneTasks(String user) {
         return null;
     }
 
