@@ -1,6 +1,7 @@
 package servlet;
 
 import com.google.gson.Gson;
+import com.sun.org.apache.xpath.internal.SourceTree;
 import dao.MemoryDao;
 
 import javax.servlet.ServletException;
@@ -47,8 +48,10 @@ public class todosServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         MemoryDao memoryDao = MemoryDao.INSTANCE;
-        Integer idHelper = Integer.valueOf(req.getRequestURI().lastIndexOf("/"));
-        Integer id = Integer.valueOf(req.getRequestURI().lastIndexOf(idHelper + 1));
+        Integer idHelper = req.getRequestURI().lastIndexOf("/");
+        System.out.println(idHelper);
+        Integer id = Integer.valueOf(req.getRequestURI().substring(idHelper + 1));
+        System.out.println(id);
         memoryDao.deleteTask(id);
     }
 }

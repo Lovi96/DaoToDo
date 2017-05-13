@@ -52,7 +52,7 @@ public class MemoryDao implements TodoDao {
     public List<Task> returnDone(String user) {
         return getDatabase()
             .stream()
-            .filter(Task ->Task.isCompleted()&&Task.getUser().equals(user) )
+            .filter(Task ->Task.isCompleted()!=false&&Task.getUser().equals(user) )
             .collect(Collectors.toList());
     }
 
@@ -66,7 +66,7 @@ public class MemoryDao implements TodoDao {
 
     @Override
     public void addTask(String name, String user) {
-        getDatabase().add(new Task(getDatabase().size()+1,name,false,user));
+        getDatabase().add(new Task(id++,name,false,user));
     }
 
     @Override
@@ -82,7 +82,7 @@ public class MemoryDao implements TodoDao {
     public void deleteTask(Integer id) {
         setDatabase(getDatabase()
             .stream()
-            .filter(Task -> Task.getId().equals(id))
+            .filter(Task -> !Task.getId().equals(id))
             .collect(Collectors.toList()));
     }
 //    public void deleteTask(Integer id) {
