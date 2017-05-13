@@ -15,7 +15,7 @@ import java.io.PrintWriter;
 /**
  * Created by lovi on 2017.05.11..
  */
-@WebServlet("/todosServlet")
+@WebServlet(urlPatterns = {"/todosServlet", "/todosServlet/*"})
 public class todosServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -29,7 +29,14 @@ public class todosServlet extends HttpServlet {
         if(req.getParameterMap().containsKey("toggle")) {
             memoryDao.toggleStatus(Integer.parseInt(req.getParameter("toggle")));
         }
-        pw.print(new Gson().toJson(memoryDao));
+        if(req.getParameterMap().containsKey("getDone")) {
+            pw.print(new Gson().toJson(memoryDao.returnDone((String) session.getAttribute("user"))));
+        }
+        if(req.getParameterMap().containsKey("getInProgress")) {
+            pw.print(new Gson().toJson(memoryDao.returnInProgress((String) session.getAttribute("user"))));
+        } else {
+            pw.print(new Gson().toJson(memoryDao.returnAll((String) session.getAttribute("user"))));
+        }
     }
 
     @Override
@@ -40,6 +47,8 @@ public class todosServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         MemoryDao memoryDao = MemoryDao.INSTANCE;
-        memoryDao.deleteTask(Integer.parseInt(req.getParameter("delete")));
+        Integer idHelper = Integer.valueOf(req.getRequestURI().lastIndexOf("/"));
+        Integer id = Integer.valueOf(req.getRequestURI().lastIndexOf(idHelper + 1));
+        memoryDao.deleteTask(id);
     }
 }

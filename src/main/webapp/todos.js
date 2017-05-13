@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $.get("/LoginServlet", function (data) {
+        console.log("started");
         loadAll(data);
-        console.log("started")
     });
     var textContent;
     $(".add").click(function () {
@@ -14,31 +14,28 @@ $(document).ready(function () {
                 console.log("data elment");
                 loadAll(data);
             }
-
         });
-
-
-// $(".add").click(function(){
-//     var li = document.createElement("li");
-//     li.innerHTML=textContent;
-//     var checkbox = document.createElement("input");
-//     checkbox.setAttribute("type","checkbox");
-//     checkbox.setAttribute("class","checkbox");
-//     var delBut = document.createElement("button");
-//     delBut.setAttribute("class","delButton");
-//     delBut.innerHTML = "X";
-//
-//     document.getElementById("container").appendChild(checkbox);
-//     document.getElementById("container").appendChild(li);
-//     document.getElementById("container").appendChild(delBut);
-// })
     });
+    $(".all").click(function () {
+        $.get("/todosServlet", function (data) {
+            loadAll(data)
+        })
+    });
+    $(".done").click(function () {
+        $.get("/todosServlet", {"getDone":""},function (data) {
+            loadAll(data)
+        })
+    });
+    $(".incomplete").click(function () {
+        $.get("/todosServlet",{"getInProgress":""},function (data) {
+            loadAll(data)
+        })
+    })
 
 });
 function loadAll(data) {
-    // var database = JSON.parse(json);
     console.log(data);
-    // document.getElementById("container").innerHTML="";
+    document.getElementById("container").innerHTML="";
     for (var i in data) {
         var task = data[i].valueOf();
         console.log(task.name);
@@ -58,21 +55,26 @@ function loadAll(data) {
             checkbox.checked = true;
         }
         var delBut = document.createElement("button");
-        delBut.setAttribute("class", "delButton");
+        delBut.setAttribute("type", "button");
         delBut.setAttribute("onclick", "deleteButton("+task.id+")");
         delBut.innerHTML = "X";
+        var br = document.createElement("br");
         var div = document.createElement("div");
-        // div.setAttribute("id","div");
-        document.getElementById("container").appendChild(checkbox);
-        document.getElementById("container").appendChild(li);
-        document.getElementById("container").appendChild(delBut);
+        div.appendChild(checkbox);
+        div.appendChild(li);
+        div.appendChild(delBut);
         $("#" + task.id).text(task.name);
-        // document.getElementById("container").appendChild(div);
+        document.getElementById("container").appendChild(div);
+        document.getElementById("container").appendChild(br);
     }
-    console.log("fori után");
+    console.log("foreach után");
 }
 function deleteButton(id){
-    $.get("/todosServlet",{delete:id},function(data){
+    $.ajax({
+        type:"DELETE",
+        url:"/todosServlet/"+id
+    });
+    $.get("/todosServlet",function (data) {
         loadAll(data)
     })
 }
