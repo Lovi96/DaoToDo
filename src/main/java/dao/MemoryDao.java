@@ -88,4 +88,11 @@ public class MemoryDao implements TodoDao {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return "MemoryDao{" +
+            "database=" + database +
+            '}';
+    }
 }

@@ -26,9 +26,6 @@ public class todosServlet extends HttpServlet {
         if(req.getParameterMap().containsKey("input")) {
             memoryDao.addTask(req.getParameter("input"), (String) session.getAttribute("user"));
         }
-        if(req.getParameterMap().containsKey("delete")) {
-            memoryDao.deleteTask(Integer.parseInt(req.getParameter("delete")));
-        }
         if(req.getParameterMap().containsKey("toggle")) {
             memoryDao.toggleStatus(Integer.parseInt(req.getParameter("toggle")));
         }
@@ -40,4 +37,9 @@ public class todosServlet extends HttpServlet {
 
     }
 
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        MemoryDao memoryDao = MemoryDao.INSTANCE;
+        memoryDao.deleteTask(Integer.parseInt(req.getParameter("delete")));
+    }
 }

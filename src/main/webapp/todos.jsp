@@ -9,7 +9,10 @@
 <html>
 <head>
     <title>Title</title>
-    <script src="webjars/jquery/3.2.0/jquery.min.js"></script>
+    <script
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
     <script src="todos.js"></script>
 </head>
 <body>
