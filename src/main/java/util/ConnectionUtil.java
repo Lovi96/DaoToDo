@@ -8,7 +8,7 @@ public final class ConnectionUtil {
 
     public enum DatabaseName {
 
-        BFA
+        BFA,todos
     }
 
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";

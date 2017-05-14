@@ -1,7 +1,8 @@
 package servlet;
 
 import com.google.gson.Gson;
-import dao.MemoryDao;
+import dao.SqlDao;
+import dao.TodoDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,25 +20,25 @@ import java.io.PrintWriter;
 public class todosServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        MemoryDao memoryDao = MemoryDao.INSTANCE;
+        TodoDao DAO = SqlDao.INSTANCE;
         resp.setContentType("application/json");
         HttpSession session = req.getSession();
         PrintWriter pw = resp.getWriter();
         if(req.getParameterMap().containsKey("input")) {
-            memoryDao.addTask(req.getParameter("input"), (String) session.getAttribute("user"));
+            DAO.addTask(req.getParameter("input"), (String) session.getAttribute("user"));
         }
         if(req.getParameterMap().containsKey("toggle")) {
-            memoryDao.toggleStatus(Integer.parseInt(req.getParameter("toggle")));
+            DAO.toggleStatus(Integer.parseInt(req.getParameter("toggle")));
         }
         if(req.getParameterMap().containsKey("getDoneTasks")) {
-            pw.print(new Gson().toJson(memoryDao.returnDoneTasks((String) session.getAttribute("user"))));
+            pw.print(new Gson().toJson(DAO.returnDoneTasks((String) session.getAttribute("user"))));
         }
         if(req.getParameterMap().containsKey("getInProgress")) {
-            pw.print(new Gson().toJson(memoryDao.returnInProgress((String) session.getAttribute("user"))));
+            pw.print(new Gson().toJson(DAO.returnInProgress((String) session.getAttribute("user"))));
         }
         if(req.getParameterMap().containsKey("input") || req.getParameterMap().containsKey("toggle")||
             req.getParameterMap().containsKey("showAll")) {
-            pw.print(new Gson().toJson(memoryDao.returnAll((String) session.getAttribute("user"))));
+            pw.print(new Gson().toJson(DAO.returnAll((String) session.getAttribute("user"))));
         }
     }
 
@@ -48,11 +49,11 @@ public class todosServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        MemoryDao memoryDao = MemoryDao.INSTANCE;
+        TodoDao DAO = SqlDao.INSTANCE;
         Integer idHelper = req.getRequestURI().lastIndexOf("/");
         System.out.println(idHelper);
         Integer id = Integer.valueOf(req.getRequestURI().substring(idHelper + 1));
         System.out.println(id);
-        memoryDao.deleteTask(id);
+        DAO.deleteTask(id);
     }
 }
